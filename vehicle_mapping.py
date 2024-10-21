@@ -1,4 +1,3 @@
-
 import os
 import shutil
 import pandas as pd
@@ -6,13 +5,17 @@ from sqlalchemy import create_engine
 import requests
 from io import StringIO
 from simple_salesforce import Salesforce
+from dotenv import load_dotenv  # Add this line to load environment variables
+
+# Load environment variables from .env file
+load_dotenv()
 
 # PostgreSQL connection details
-pg_host = '34.100.223.97'
-pg_port = '5432'
-pg_database = 'master_prod'
-pg_username = 'postgres'
-pg_password = 'theimm0rtaL'
+pg_host = '34.100.223.97'  # Consider putting this in the .env file
+pg_port = '5432'            # Consider putting this in the .env file
+pg_database = 'master_prod' # Consider putting this in the .env file
+pg_username = os.getenv('PG_USERNAME')  # Load from .env
+pg_password = os.getenv('PG_PASSWORD')  # Load from .env
 
 # Create SQLAlchemy engine
 pg_engine = create_engine(f'postgresql+psycopg2://{pg_username}:{pg_password}@{pg_host}:{pg_port}/{pg_database}')
@@ -45,9 +48,9 @@ pg_engine.dispose()
 
 # Salesforce connection details
 sf = Salesforce(
-    username='sagar@project-lithium.com',
-    password='Tableau987@',
-    security_token='D36ShoXIlHEf5Mdh7GEq2PuJ'
+    username=os.getenv('SF_USERNAME'),  # Load from .env
+    password=os.getenv('SF_PASSWORD'),  # Load from .env
+    security_token=os.getenv('SF_SECURITY_TOKEN')  # Load from .env
 )
 
 sf_instance = 'https://project-lithium.my.salesforce.com/'

@@ -1,0 +1,33 @@
+name: Run Vehicle Mapping and Send Emails
+
+on:
+  push:
+    branches:
+      - main  # Specify the branch to trigger this workflow
+  schedule:
+    - cron: '30 4 * * *'  # Runs every day at 4:30 AM UTC (10:00 AM IST)
+
+jobs:
+  run_scripts:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@v2
+
+      - name: Set up Python
+        uses: actions/setup-python@v2
+        with:
+          python-version: '3.8'  # Specify your Python version
+
+      - name: Install Dependencies
+        run: |
+          pip install -r requirements.txt
+
+      - name: Run Vehicle Mapping Script
+        run: |
+          python vehicle_mapping.py
+
+      - name: Run Mail Script
+        run: |
+          python mail_script.py

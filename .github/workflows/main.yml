@@ -20,14 +20,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Load environment variables from .env
+        run: |
+          echo "Loading environment variables from .env file"
+          set -a
+          source .env
+          set +a
+
       - name: Run vehicle_mapping.py
-        env:
-          PG_HOST: ${{ secrets.PG_HOST }}
-          PG_PORT: ${{ secrets.PG_PORT }}
-          PG_DATABASE: ${{ secrets.PG_DATABASE }}
-          PG_USERNAME: ${{ secrets.PG_USERNAME }}
-          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
-          SF_USERNAME: ${{ secrets.SF_USERNAME }}
-          SF_PASSWORD: ${{ secrets.SF_PASSWORD }}
-          SF_TOKEN: ${{ secrets.SF_TOKEN }}
         run: python vehicle_mapping.py

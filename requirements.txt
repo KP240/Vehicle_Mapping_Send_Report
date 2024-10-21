@@ -3,3 +3,4 @@ sqlalchemy
 requests
 simple_salesforce
 python-dotenv
+psycopg2-binary

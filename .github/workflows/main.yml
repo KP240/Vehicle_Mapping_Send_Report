@@ -1,33 +1,33 @@
-name: Run Vehicle Mapping and Send Emails
+name: Run Python Script
 
-on:
-  push:
-    branches:
-      - main  # Specify the branch to trigger this workflow
-  schedule:
-    - cron: '30 4 * * *'  # Runs every day at 4:30 AM UTC (10:00 AM IST)
+on: [push]
 
 jobs:
-  run_scripts:
+  build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Checkout Repository
+      - name: Checkout code
         uses: actions/checkout@v2
 
       - name: Set up Python
         uses: actions/setup-python@v2
         with:
-          python-version: '3.8'  # Specify your Python version
+          python-version: '3.8'
 
-      - name: Install Dependencies
+      - name: Install dependencies
         run: |
+          python -m pip install --upgrade pip
           pip install -r requirements.txt
 
-      - name: Run Vehicle Mapping Script
-        run: |
-          python vehicle_mapping.py
-
-      - name: Run Mail Script
-        run: |
-          python mail_script.py
+      - name: Run vehicle_mapping.py
+        env:
+          PG_HOST: ${{ secrets.PG_HOST }}
+          PG_PORT: ${{ secrets.PG_PORT }}
+          PG_DATABASE: ${{ secrets.PG_DATABASE }}
+          PG_USERNAME: ${{ secrets.PG_USERNAME }}
+          PG_PASSWORD: ${{ secrets.PG_PASSWORD }}
+          SF_USERNAME: ${{ secrets.SF_USERNAME }}
+          SF_PASSWORD: ${{ secrets.SF_PASSWORD }}
+          SF_TOKEN: ${{ secrets.SF_TOKEN }}
+        run: python vehicle_mapping.py
